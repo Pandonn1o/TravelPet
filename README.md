@@ -39,3 +39,16 @@
 4.  **View in browser**
     Open http://localhost:3000
 
+#   ✨Inspiration
+    This project is part of my journey to become a fullstack developer. I wanted to build something creative and real-world inspired — combining my love of travel with web development.
+
+# 📬 Contact
+    Built with ❤️ by Misha
+    Email: mishadyshkant132@gmail.com
+    GitHub: github.com/Pandonn1o
+
+# 🧭 Future Improvements
+    Google Maps integration
+    Social login (Google/Facebook)
+    AI-generated story suggestions
+    Progressive Web App support
