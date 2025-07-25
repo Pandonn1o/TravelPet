@@ -1,46 +1,43 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
-require('dotenv').config();
-const authRoutes = require('./routes/authRoutes');
 const session = require('express-session');
+const path = require('path');
 
-const app = express(); 
+const app = express();
 
+// DB
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB error:', err));
 
-
+// Middlewares
+app.use(express.urlencoded({ extended: false }));
 app.use(session({
-  secret: 'ADchhoWk0wK2LFw', // change this to something secure in production
+  secret: process.env.SESSION_SECRET, // ← це має бути!
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: false
 }));
 
 
-app.use(express.urlencoded({ extended: true })); // for form data
-app.use(express.json()); // for JSON
-app.use('/auth', authRoutes);
-// Dashboard route
-app.get('/dashboard', (req, res) => {
-  if (!req.session.userId) {
-    return res.redirect('/auth/login');
-  }
-  res.render('dashboard', { userId: req.session.userId });
-});
-
-
-const PORT = process.env.PORT || 3000;
-
-app.use(express.json());        
+// Views
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Routes
+const authRoutes = require('./routes/auth');
+const { requireLogin } = require('./routes/auth');
+
+app.use('/auth', authRoutes);
 
 app.get('/', (req, res) => {
-  res.render('index', { title: 'TripTeller' });
+  res.send('Welcome to TravelPet!');
 });
 
-mongoose.connect(process.env.MONGO_URI)
-.then(() => {
-  console.log('Connected to MongoDB');
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
-})
-.catch(err => console.error(err));
+app.get('/dashboard', requireLogin, (req, res) => {
+  res.send(`Welcome to your dashboard, user ID: ${req.session.userId}`);
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -21,16 +21,13 @@ router.post('/signup', async (req, res) => {
   const { email, password } = req.body;
   try {
     const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.send('User already exists');
-    }
+    if (existingUser) return res.send('User already exists');
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ email, password: hashedPassword });
+    const user = new User({ email, password });
     await user.save();
 
     req.session.userId = user._id;
-    res.redirect('/dashboard'); // or wherever you want to go after signup
+    res.redirect('/dashboard');
   } catch (err) {
     console.error(err);
     res.status(500).send('Signup error');
@@ -46,24 +43,11 @@ router.get('/login', (req, res) => {
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
-    console.log('Trying login with:', email);
     const user = await User.findOne({ email });
-    console.log('Found user in DB:', user);
+    if (!user) return res.send('Invalid credentials');
 
-    if (!user) {
-      console.log('User not found');
-      return res.send('Invalid credentials');
-    }
-
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    console.log('Input password:', password);
-    console.log('Hashed in DB:', user.password);
-    console.log('Password match result:', passwordMatch);
-
-
-    if (!passwordMatch) {
-      return res.send('Invalid credentials (wrong password)');
-    }
+    const passwordMatch = await user.comparePassword(password);
+    if (!passwordMatch) return res.send('Invalid credentials (wrong password)');
 
     req.session.userId = user._id;
     res.redirect('/dashboard');
@@ -73,11 +57,10 @@ router.post('/login', async (req, res) => {
   }
 });
 
-
-// Logout
+// ✅ GET Logout (повернули)
 router.get('/logout', (req, res) => {
   req.session.destroy(() => {
-    res.redirect('/');
+    res.redirect('/auth/login');
   });
 });
 
