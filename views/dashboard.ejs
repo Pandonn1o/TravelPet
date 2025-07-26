@@ -4,50 +4,93 @@
   <title>Dashboard</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       background: #f7f9fc;
-      padding: 2rem;
+      margin: 0;
+      padding: 0;
     }
     .container {
-      max-width: 600px;
-      margin: auto;
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 650px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 2.5rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08);
     }
     h2 {
+      margin-bottom: 0.5rem;
+      color: #2d3748;
+      font-weight: 600;
+    }
+    .welcome {
+      margin-bottom: 1.5rem;
+      color: #4a5568;
+    }
+    .trips-section {
+      margin-top: 2rem;
+    }
+    .trips-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .trip-item {
+      background: #f1f5f9;
       margin-bottom: 1rem;
+      padding: 1rem 1.2rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+      transition: background 0.2s;
     }
-    .logout {
+    .trip-item:hover {
+      background: #e2e8f0;
+    }
+    .trip-destination {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #2563eb;
+    }
+    .trip-date {
+      color: #64748b;
+      font-size: 0.95rem;
+      margin-left: 0.5rem;
+    }
+    .trip-description {
+      color: #475569;
+      margin-top: 0.3rem;
+      font-size: 0.98rem;
+    }
+    .no-trips {
+      color: #a0aec0;
+      font-style: italic;
       margin-top: 1rem;
-    }
-    button {
-      padding: 0.5rem 1rem;
-      border: none;
-      background: #007bff;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
+  <%- include('partials/header') %>
+
   <div class="container">
     <h2>Welcome, <%= user.email %> 👋</h2>
-    <p>This is your dashboard.</p>
+    <div class="welcome">This is your dashboard.</div>
 
-    <!-- Trip listing section (to be filled later) -->
-    <div>
+    <div class="trips-section">
       <h3>Your Trips</h3>
-      <p>No trips yet.</p>
+      <% if (trips.length === 0) { %>
+        <div class="no-trips">No trips yet.</div>
+      <% } else { %>
+        <ul class="trips-list">
+          <% trips.forEach(trip => { %>
+            <li class="trip-item">
+              <span class="trip-destination"><%= trip.destination %></span>
+              <span class="trip-date">
+                (<%= trip.date ? new Date(trip.date).toLocaleDateString() : 'No date' %>)
+              </span>
+              <div class="trip-description">
+                <%= trip.description || 'No description' %>
+              </div>
+            </li>
+          <% }) %>
+        </ul>
+      <% } %>
     </div>
-
-    <div class="logout">
-      <form action="/auth/logout" method="GET">
-        <button type="submit">Logout</button>
-      </form>
-    </div>
-  </div>
-</body>
-</html>

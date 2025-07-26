@@ -8,6 +8,9 @@ const User = require('./models/User');
 const tripRoutes = require('./routes/tripRoutes');
 
 const app = express();
+const Trip = require('./models/Trip'); // Import Trip model
+
+
 
 // DB
 mongoose.connect(process.env.MONGO_URI)
@@ -40,8 +43,14 @@ app.get('/', (req, res) => {
 
 
 app.get('/dashboard', requireLogin, async (req, res) => {
-  const user = await User.findById(req.session.userId);
-  res.render('dashboard', { user });
+  try {
+    const user = await User.findById(req.session.userId);
+    const trips = await Trip.find({ userId: req.session.userId }).sort({ date: -1 });
+    res.render('dashboard', { user, trips });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
 });
 
 
