@@ -1,7 +1,53 @@
-<h2>Welcome, <%= user.email %>!</h2>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f7f9fc;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-bottom: 1rem;
+    }
+    .logout {
+      margin-top: 1rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Welcome, <%= user.email %> 👋</h2>
+    <p>This is your dashboard.</p>
 
-<p>🌍 Your Trips will appear here soon!</p>
+    <!-- Trip listing section (to be filled later) -->
+    <div>
+      <h3>Your Trips</h3>
+      <p>No trips yet.</p>
+    </div>
 
-<a href="/auth/logout">
-  <button>🚪 Logout</button>
-</a>
+    <div class="logout">
+      <form action="/auth/logout" method="GET">
+        <button type="submit">Logout</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
