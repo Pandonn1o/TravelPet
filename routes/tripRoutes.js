@@ -7,6 +7,17 @@ const { requireLogin } = require('./auth');
 router.get('/new', requireLogin, (req, res) => {
   res.render('newTrip');
 });
+// Show edit form
+router.get('/:id/edit', requireLogin, async (req, res) => {
+  try {
+    const trip = await Trip.findOne({ _id: req.params.id, userId: req.session.userId });
+    if (!trip) return res.status(404).send('Trip not found');
+    res.render('editTrip', { trip });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
 
 // Handle trip creation
 router.post('/', requireLogin, async (req, res) => {
@@ -24,5 +35,35 @@ router.post('/', requireLogin, async (req, res) => {
     res.status(500).send('Error creating trip');
   }
 });
+
+// Handle edit form submission
+router.post('/:id/edit', requireLogin, async (req, res) => {
+  try {
+    const { destination, description, date } = req.body;
+    const trip = await Trip.findOneAndUpdate(
+      { _id: req.params.id, userId: req.session.userId },
+      { destination, description, date },
+      { new: true }
+    );
+    if (!trip) return res.status(404).send('Trip not found');
+    res.redirect('/dashboard');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
+// Handle delete
+router.post('/:id/delete', requireLogin, async (req, res) => {
+  try {
+    const result = await Trip.deleteOne({ _id: req.params.id, userId: req.session.userId });
+    if (result.deletedCount === 0) return res.status(404).send('Trip not found');
+    res.redirect('/dashboard');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
 
 module.exports = router;

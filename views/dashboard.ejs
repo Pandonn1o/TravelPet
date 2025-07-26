@@ -82,15 +82,26 @@
         <ul class="trips-list">
           <% trips.forEach(trip => { %>
             <li class="trip-item">
-              <span class="trip-destination"><%= trip.destination %></span>
-              <span class="trip-date">
-                (<%= trip.date ? new Date(trip.date).toLocaleDateString() : 'No date' %>)
-              </span>
+              <div>
+                <span class="trip-destination"><%= trip.destination %></span>
+                <span class="trip-date">
+                  (<%= trip.date ? new Date(trip.date).toLocaleDateString() : 'No date' %>)
+                </span>
+              </div>
               <div class="trip-description">
                 <%= trip.description || 'No description' %>
+              </div>
+              <div style="margin-top:0.7rem;">
+                <a href="/trips/<%= trip._id %>/edit" style="color:#2563eb; text-decoration:none; margin-right:1.2rem;">Edit</a>
+                <form action="/trips/<%= trip._id %>/delete" method="POST" style="display:inline" onsubmit="return confirm('Delete this trip?');">
+                  <button type="submit" style="background:none; border:none; color:#e11d48; cursor:pointer; padding:0; font-weight:500;">Delete</button>
+                </form>
               </div>
             </li>
           <% }) %>
         </ul>
       <% } %>
     </div>
+  </div>
+</body>
+</html>

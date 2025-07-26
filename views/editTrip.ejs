@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Trip | TripTeller</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f7f9fc;
+      margin: 0;
+      padding: 0;
+    }
+    .form-container {
+      max-width: 450px;
+      margin: 80px auto 0 auto;
+      background: #fff;
+      padding: 2.5rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    h2 {
+      color: #2563eb;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+    input[type="text"], input[type="date"], textarea {
+      width: 90%;
+      padding: 0.7rem;
+      margin-bottom: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #f1f5f9;
+      transition: border 0.2s;
+      resize: vertical;
+    }
+    input:focus, textarea:focus {
+      border-color: #2563eb;
+      outline: none;
+    }
+    button {
+      background: #2563eb;
+      color: #fff;
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    .back-link {
+      display: block;
+      margin-top: 1.5rem;
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 0.98rem;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <%- include('partials/header') %>
+  <div class="form-container">
+    <h2>Edit Trip</h2>
+    <form action="/trips/<%= trip._id %>/edit" method="POST">
+      <input type="text" name="destination" value="<%= trip.destination %>" required />
+      <textarea name="description" placeholder="Description"><%= trip.description %></textarea>
+      <input type="date" name="date" value="<%= trip.date ? trip.date.toISOString().substring(0,10) : '' %>" />
+      <button type="submit">Save</button>
+    </form>
+    <a href="/dashboard" class="back-link">Back to Dashboard</a>
+  </div>
