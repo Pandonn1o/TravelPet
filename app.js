@@ -4,6 +4,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const path = require('path');
+const User = require('./models/User');
+
 
 const app = express();
 
@@ -32,12 +34,15 @@ const { requireLogin } = require('./routes/auth');
 app.use('/auth', authRoutes);
 
 app.get('/', (req, res) => {
-  res.send('Welcome to TravelPet!');
+  res.render('index', { title: 'TripTeller' });
 });
 
-app.get('/dashboard', requireLogin, (req, res) => {
-  res.send(`Welcome to your dashboard, user ID: ${req.session.userId}`);
+
+app.get('/dashboard', requireLogin, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  res.render('dashboard', { user });
 });
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

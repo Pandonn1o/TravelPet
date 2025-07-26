@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Dashboard</title>
-</head>
-<body>
-  <h1>Welcome to your dashboard!</h1>
-  <p>Your user ID is: <%= userId %></p>
-  <a href="/auth/logout">Logout</a>
+<h2>Welcome, <%= user.email %>!</h2>
 
-</body>
-</html>
+<p>🌍 Your Trips will appear here soon!</p>
+
+<a href="/auth/logout">
+  <button>🚪 Logout</button>
+</a>
