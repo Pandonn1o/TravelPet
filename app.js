@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const path = require('path');
 const User = require('./models/User');
-
+const tripRoutes = require('./routes/tripRoutes');
 
 const app = express();
 
@@ -21,6 +21,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+app.use('/trips', tripRoutes);
 
 
 // Views
