@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Travel Post | TripTeller</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f7f9fc;
+      margin: 0; padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+      width: 400px;
+      text-align: center;
+    }
+    h1 {
+      color: #2563eb;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      resize: vertical;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: background 0.2s ease-in-out;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Add New Travel Post</h1>
+    <form action="/posts" method="POST">
+      <input type="text" name="title" placeholder="Title" required />
+      <textarea name="description" rows="5" placeholder="Description" required></textarea>
+      <input type="text" name="location" placeholder="Location" required />
+      <input type="text" name="photoUrl" placeholder="Photo URL" />
+      <button type="submit">Create Post</button>
+    </form>
+    
+  </div>
+</body>
+</html>

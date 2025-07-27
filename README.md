@@ -17,8 +17,8 @@
 
 - ✅ Homepage with featured stories
 - ✅ MongoDB connection via Mongoose
-- 🔜 User authentication (signup/login)
-- 🔜 Add and view short travel stories
+- ✅ User authentication (signup/login)
+- ✅ Add and view short travel stories
 - 🔜 Mood tags and filters (e.g., 🌿 nature, 🎉 party)
 - 🔜 Profile pages to see your own stories
 

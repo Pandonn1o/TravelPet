@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TripTeller</title>
+    <title>Travel Posts</title>
     <style>
       body {
         font-family: 'Segoe UI', Arial, sans-serif;
@@ -10,45 +10,91 @@
         padding: 0;
       }
       .main-content {
-        max-width: 500px;
-        margin: 80px auto 0 auto;
+        max-width: 800px;
+        margin: 60px auto;
         background: #fff;
-        padding: 2.5rem 2rem;
+        padding: 2rem;
         border-radius: 16px;
-        box-shadow: 0 6px 24px rgba(0,0,0,0.08);
-        text-align: center;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
       }
       h1 {
         color: #2563eb;
-        font-size: 2.2rem;
-        margin-bottom: 0.5rem;
-        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
       }
-      p {
+      .post {
+        border-bottom: 1px solid #e2e8f0;
+        padding: 1rem 0;
+      }
+      .post:last-child {
+        border-bottom: none;
+      }
+      .post-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 0.3rem;
+        color: #1e293b;
+      }
+      .post-desc {
         color: #475569;
-        font-size: 1.15rem;
-        margin-bottom: 2rem;
+        margin-bottom: 0.5rem;
       }
-      .cta-btn {
-        display: inline-block;
+      .post-location {
+        font-style: italic;
+        color: #64748b;
+        margin-bottom: 0.5rem;
+      }
+      .post-actions a {
+        margin-right: 1rem;
+        text-decoration: none;
+        color: #2563eb;
+        font-weight: 500;
+      }
+      .post-actions a:hover {
+        text-decoration: underline;
+      }
+      .add-btn {
+        display: block;
+        width: fit-content;
+        margin: 2rem auto 0 auto;
         background: #2563eb;
         color: #fff;
-        padding: 0.7rem 1.5rem;
+        padding: 0.6rem 1.3rem;
         border-radius: 8px;
         text-decoration: none;
         font-weight: 500;
         font-size: 1rem;
         transition: background 0.2s;
       }
-      .cta-btn:hover {
+      .add-btn:hover {
         background: #1d4ed8;
+      }
+      .center-message {
+        text-align: center;
+        color: #64748b;
+        margin: 2rem 0;
+        font-size: 1.1rem;
       }
     </style>
   </head>
   <body>
     <%- include('partials/header') %>
     <div class="main-content">
-      <h1>Welcome to TripTeller 🌍</h1>
-      <p>Your travel story starts here.</p>
-      <a href="/auth/login" class="cta-btn">Get Started</a>
+      <h1>All Travel Posts 🧳</h1>
+
+      <% if (posts.length === 0) { %>
+        <p class="center-message">No travel posts yet. Be the first to share your journey!</p>
+      <% } %>
+
+      <% posts.forEach(post => { %>
+        <div class="post">
+          <div class="post-title"><%= post.title %></div>
+          <div class="post-desc"><%= post.description %></div>
+        </div>
+      <% }); %>
+
+      <a href="/posts/new" class="add-btn">+ Add New Post</a>
     </div>
+  </body>
+</html>
