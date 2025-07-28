@@ -102,7 +102,9 @@
   <%- include('../partials/header') %>
   <div class="post-card">
     <h1><%= post.title %></h1>
-    <img src="<%= post.photo %>" alt="<%= post.title %>" class="post-img" />
+    <% if (post.photo) { %>
+      <img src="<%= post.photo %>" alt="Travel photo" class="post-img" style="max-width: 100%; height: auto;" />
+    <% } %>
     <div class="post-meta"><strong>Location:</strong> <%= post.location %></div>
     <div class="post-desc"><%= post.description %></div>
     <% if (currentUser && post.owner._id.toString() === currentUser._id.toString()) { %>

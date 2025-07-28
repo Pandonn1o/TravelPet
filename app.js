@@ -21,13 +21,20 @@ mongoose.connect(process.env.MONGO_URI)
 // Middlewares
 app.use(express.urlencoded({ extended: false }));
 
+// Serve static files (for uploads, CSS, etc.)
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(session({
   secret: process.env.SESSION_SECRET, // make sure this is set in your .env file
   resave: false,
   saveUninitialized: false,
 }));
 
-
+// Middleware to make req.query available as 'query' in all views
+app.use((req, res, next) => {
+  res.locals.query = req.query;
+  next();
+});
 
 // Middleware to set currentUser for all views
 app.use(async (req, res, next) => {

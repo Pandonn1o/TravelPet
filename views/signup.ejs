@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,12 +61,23 @@
     .switch-link:hover {
       text-decoration: underline;
     }
+    .error-message {
+      color: #e11d48;
+      background: #fbeaec;
+      border-radius: 8px;
+      padding: 0.7rem 1rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
   </style>
 </head>
 <body>
   <%- include('partials/header') %>
   <div class="form-container">
     <h2>Signup</h2>
+    <% if (query && query.error === 'exists') { %>
+      <div class="error-message">User already exists. Please log in or use a different email.</div>
+    <% } %>
     <form action="/auth/signup" method="POST">
       <input type="email" name="email" placeholder="Email" required />
       <input type="password" name="password" placeholder="Password" required />

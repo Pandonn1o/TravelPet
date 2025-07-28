@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const TravelPost = require('../models/TravelPost');
 const { requireLogin } = require('./auth');
-
+const upload = require('../middleware/upload');
 
 // Show all posts
 router.get('/', async (req, res) => {
@@ -16,11 +16,10 @@ router.get('/new', requireLogin, (req, res) => {
   res.render('travelPostForm');
 });
 
-
-
-// Create post
-router.post('/', requireLogin, async (req, res) => {
-  const { title, description, photo, location, latitude, longitude } = req.body;
+// Create post with file upload
+router.post('/', requireLogin, upload.single('photo'), async (req, res) => {
+  const { title, description, location, latitude, longitude } = req.body;
+  const photo = req.file ? `/uploads/${req.file.filename}` : req.body.photo || null;
 
   const newPost = new TravelPost({
     title,
@@ -35,7 +34,6 @@ router.post('/', requireLogin, async (req, res) => {
   await newPost.save();
   res.redirect('/posts');
 });
-
 
 // Show one post
 router.get('/:id', async (req, res) => {

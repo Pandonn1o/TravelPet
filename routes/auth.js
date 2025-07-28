@@ -21,7 +21,9 @@ router.post('/signup', async (req, res) => {
   const { email, password } = req.body;
   try {
     const existingUser = await User.findOne({ email });
-    if (existingUser) return res.send('User already exists');
+    if (existingUser) {
+      return res.redirect('/auth/signup?error=exists'); // <-- fixed here
+    }
 
     const user = new User({ email, password });
     await user.save();

@@ -6,7 +6,7 @@ const travelPostSchema = new mongoose.Schema({
     required: true,
   },
   description: String,
-  photo: String, // store image URL or filename
+  photo: String, // ← New
   location: String,
   latitude: Number,     // ← New
   longitude: Number,    // ← New
