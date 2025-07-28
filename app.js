@@ -32,7 +32,6 @@ app.use(session({
   saveUninitialized: true
 }));
 
-
 // Middleware to make req.query available as 'query' in all views
 app.use((req, res, next) => {
   res.locals.query = req.query;
