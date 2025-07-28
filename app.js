@@ -25,10 +25,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret: process.env.SESSION_SECRET, // make sure this is set in your .env file
+  secret: process.env.SESSION_SECRET || 'Mishka30283028',
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true
 }));
+
 
 // Middleware to make req.query available as 'query' in all views
 app.use((req, res, next) => {
