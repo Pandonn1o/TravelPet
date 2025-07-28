@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title><%= post.title %> | TripTeller</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
@@ -13,7 +14,7 @@
     }
     .post-card {
       max-width: 600px;
-      margin: 5rem auto 2rem auto; /* extra top margin for header */
+      margin: 5rem auto 2rem auto;
       padding: 2rem 2rem 1.5rem 2rem;
       background: #fff;
       border-radius: 16px;
@@ -59,17 +60,23 @@
       gap: 1rem;
       margin-top: 1.5rem;
     }
-    .edit-btn {
-      background: #2563eb;
-      color: #fff;
+    .edit-btn,
+    .delete-btn {
+      min-width: 120px;
+      text-align: center;
       padding: 0.5rem 1.2rem;
       border-radius: 8px;
       border: none;
       font-size: 1rem;
       font-weight: 500;
-      text-decoration: none;
-      transition: background 0.2s;
       cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .edit-btn {
+      background: #2563eb;
+      color: #fff;
     }
     .edit-btn:hover {
       background: #1d4ed8;
@@ -78,17 +85,16 @@
     .delete-btn {
       background: #e11d48;
       color: #fff;
-      padding: 0.5rem 1.2rem;
-      border-radius: 8px;
-      border: none;
-      font-size: 1rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s;
     }
     .delete-btn:hover {
       background: #be123c;
       color: #fff;
+    }
+    #map {
+      height: 300px;
+      width: 100%;
+      margin-top: 1rem;
+      border-radius: 10px;
     }
   </style>
 </head>
@@ -97,8 +103,8 @@
   <div class="post-card">
     <h1><%= post.title %></h1>
     <img src="<%= post.photo %>" alt="<%= post.title %>" class="post-img" />
-    <div class="post-desc"><%= post.description %></div>
     <div class="post-meta"><strong>Location:</strong> <%= post.location %></div>
+    <div class="post-desc"><%= post.description %></div>
     <% if (currentUser && post.owner._id.toString() === currentUser._id.toString()) { %>
       <div class="post-actions">
         <a href="/posts/<%= post._id %>/edit" class="edit-btn">Edit</a>
@@ -107,6 +113,31 @@
         </form>
       </div>
     <% } %>
+    <div id="map"></div>
   </div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Convert post.location into coordinates via OpenStreetMap Nominatim
+    async function initMap() {
+      const location = "<%= post.location %>";
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}`);
+      const data = await response.json();
+
+      if (data.length > 0) {
+        const { lat, lon } = data[0];
+        const map = L.map('map').setView([lat, lon], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        L.marker([lat, lon]).addTo(map).bindPopup(location).openPopup();
+      } else {
+        document.getElementById('map').innerHTML = "Location not found.";
+      }
+    }
+
+    initMap();
+  </script>
 </body>
 </html>

@@ -20,8 +20,18 @@ router.get('/new', requireLogin, (req, res) => {
 
 // Create post
 router.post('/', requireLogin, async (req, res) => {
-  const { title, description, photo, location } = req.body;
-  const newPost = new TravelPost({ title, description, photo, location, owner: req.session.userId });
+  const { title, description, photo, location, latitude, longitude } = req.body;
+
+  const newPost = new TravelPost({
+    title,
+    description,
+    photo,
+    location,
+    latitude,
+    longitude,
+    owner: req.session.userId
+  });
+
   await newPost.save();
   res.redirect('/posts');
 });

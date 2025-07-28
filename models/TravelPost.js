@@ -8,6 +8,8 @@ const travelPostSchema = new mongoose.Schema({
   description: String,
   photo: String, // store image URL or filename
   location: String,
+  latitude: Number,     // ← New
+  longitude: Number,    // ← New
   createdAt: {
     type: Date,
     default: Date.now,
