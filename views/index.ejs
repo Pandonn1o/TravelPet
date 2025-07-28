@@ -45,19 +45,27 @@
         color: #64748b;
         margin-bottom: 0.5rem;
       }
-      .edit-btn {
+      .edit-btn,
+      .delete-btn,
+      .view-btn {
         display: inline-block;
-        background: #2563eb;
-        color: #fff;
-        padding: 0.4rem 1rem;
+        min-width: 120px;
+        text-align: center;
+        padding: 0.5rem 1.2rem;
         border-radius: 6px;
-        border: none;
         font-size: 1rem;
         font-weight: 500;
-        text-decoration: none;
-        margin-right: 0.5rem;
-        transition: background 0.2s;
+        border: none;
         cursor: pointer;
+        transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+        margin-right: 0.5rem;
+        margin-top: 1rem;
+        box-sizing: border-box;
+      }
+      .edit-btn {
+        background: #2563eb;
+        color: #fff;
+        text-decoration: none;
       }
       .edit-btn:hover {
         background: #1d4ed8;
@@ -65,20 +73,25 @@
         text-decoration: none;
       }
       .delete-btn {
-        display: inline-block;
         background: #e11d48;
         color: #fff;
-        padding: 0.4rem 1rem;
-        border-radius: 6px;
-        border: none;
-        font-size: 1rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background 0.2s;
       }
       .delete-btn:hover {
         background: #be123c;
         color: #fff;
+      }
+      .view-btn {
+        background: #007bff;
+        color: #fff;
+        text-decoration: none;
+        box-shadow: 0 2px 8px rgba(0,123,255,0.10);
+      }
+      .view-btn:hover {
+        background: #0056b3;
+        color: #fff;
+        transform: translateY(-2px) scale(1.04);
+        box-shadow: 0 4px 16px rgba(0,123,255,0.18);
+        text-decoration: none;
       }
       .add-btn {
         display: block;
@@ -122,6 +135,7 @@
             <form action="/posts/<%= post._id %>/delete" method="POST" style="display:inline;">
               <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this post?')">Delete</button>
             </form>
+            <a href="/posts/<%= post._id %>" class="view-btn">View Post</a>
           <% } %>
         </div>
       <% }); %>
