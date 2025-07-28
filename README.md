@@ -38,11 +38,12 @@
     node app.js
 4.  **View in browser**
     Open http://localhost:3000
+##  **Or**
+
+    https://travelpet.onrender.com/
 
 #   ✨Inspiration
     This project is part of my journey to become a fullstack developer. I wanted to build something creative and real-world inspired — combining my love of travel with web development.
-#   **Link**
-    https://travelpet.onrender.com/
 
 # 📬 Contact
     Built with ❤️ by Misha
