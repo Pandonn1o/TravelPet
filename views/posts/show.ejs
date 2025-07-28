@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title><%= post.title %> | TripTeller</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f7f9fc;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    .post-card {
+      max-width: 600px;
+      margin: 5rem auto 2rem auto; /* extra top margin for header */
+      padding: 2rem 2rem 1.5rem 2rem;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+      border: none;
+    }
+    .post-card h1 {
+      color: #2563eb;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      text-align: center;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    .post-img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 1.2rem;
+      object-fit: cover;
+      max-height: 320px;
+      background: #f1f5f9;
+    }
+    .post-desc {
+      color: #475569;
+      font-size: 1.1rem;
+      margin-bottom: 1.2rem;
+      text-align: center;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    .post-meta {
+      color: #64748b;
+      font-size: 1rem;
+      margin-bottom: 0.7rem;
+      text-align: center;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    .post-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .edit-btn {
+      background: #2563eb;
+      color: #fff;
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    .edit-btn:hover {
+      background: #1d4ed8;
+      color: #fff;
+    }
+    .delete-btn {
+      background: #e11d48;
+      color: #fff;
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .delete-btn:hover {
+      background: #be123c;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <%- include('../partials/header') %>
+  <div class="post-card">
+    <h1><%= post.title %></h1>
+    <img src="<%= post.photo %>" alt="<%= post.title %>" class="post-img" />
+    <div class="post-desc"><%= post.description %></div>
+    <div class="post-meta"><strong>Location:</strong> <%= post.location %></div>
+    <% if (currentUser && post.owner._id.toString() === currentUser._id.toString()) { %>
+      <div class="post-actions">
+        <a href="/posts/<%= post._id %>/edit" class="edit-btn">Edit</a>
+        <form action="/posts/<%= post._id %>/delete" method="POST" style="display:inline;">
+          <button type="submit" class="delete-btn" onclick="return confirm('Delete this post?')">Delete</button>
+        </form>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>

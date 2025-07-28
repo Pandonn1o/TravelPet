@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Travel Post | TripTeller</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f7f9fc;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    .header-container {
+      width: 100vw;
+      box-sizing: border-box;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .main-center {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 90px; /* space for header */
+      box-sizing: border-box;
+    }
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+      width: 400px;
+      max-width: 95vw;
+      text-align: center;
+      box-sizing: border-box;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+    h1 {
+      color: #2563eb;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      resize: vertical;
+      text-align: center;
+      box-sizing: border-box;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      max-width: 100%;
+    }
+    textarea {
+      text-align: left;
+      min-height: 80px;
+      max-width: 100%;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+    .form-actions {
+      width: 100%;
+      display: flex;
+      justify-content: center; /* Center the button horizontally */
+    }
+    button {
+      background: linear-gradient(90deg, #2563eb 60%, #1d4ed8 100%);
+      color: white;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+      transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+    }
+    button:hover {
+      background: linear-gradient(90deg, #1d4ed8 60%, #2563eb 100%);
+      box-shadow: 0 4px 16px rgba(37,99,235,0.18);
+      transform: translateY(-2px) scale(1.03);
+    }
+  </style>
+</head>
+<body>
+  <div class="header-container">
+    <%- include('../partials/header') %>
+  </div>
+  <div class="main-center">
+    <div class="card">
+      <h1>Edit Travel Post</h1>
+      <form action="/posts/<%= post._id %>" method="POST">
+        <input type="text" name="title" placeholder="Title" value="<%= post.title %>" required maxlength="100" />
+        <textarea name="description" placeholder="Description" required maxlength="1000"><%= post.description %></textarea>
+        <input type="text" name="location" placeholder="Location" value="<%= post.location %>" required maxlength="100" />
+        <input type="text" name="photo" placeholder="Photo URL" value="<%= post.photo %>" required maxlength="300" />
+        <div class="form-actions">
+          <button type="submit">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

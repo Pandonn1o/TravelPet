@@ -5,7 +5,9 @@
   <div>
     <% if (currentUser) { %>
       <a href="/dashboard" style="color:white; margin-right:1rem; text-decoration:none;">Dashboard</a>
-      <a href="/trips/new" style="color:white; margin-right:1rem; text-decoration:none;">Add Trip</a>
+      <% if (currentUser) { %>
+  <a href="/trips/new" style="color:white; margin-right:1rem; text-decoration:none;">Add Trip</a>
+<% } %>
       <a href="/auth/logout" style="color:white; text-decoration:none;">Logout</a>
     <% } else { %>
       <a href="/auth/login" style="color:white; margin-right:1rem; text-decoration:none;">Login</a>
