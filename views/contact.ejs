@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contact Us - TravelPet</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7f9fc;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 500px;
+      margin: 80px auto;
+      background: #fff;
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+    }
+    h1 {
+      color: #2563eb;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    form input, form textarea {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      background: #2563eb;
+      color: #fff;
+      padding: 0.8rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+    .success {
+      background-color: #d1e7dd;
+      color: #0f5132;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #842029;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Contact Us 💌</h1>
+
+    <% if (message) { %>
+      <div class="success"><%= message %></div>
+    <% } %>
+
+    <% if (error) { %>
+      <div class="error"><%= error %></div>
+    <% } %>
+
+    <form action="/contact" method="POST">
+      <input type="text" name="name" placeholder="Your name" required />
+      <input type="email" name="email" placeholder="Your email" required />
+      <textarea name="message" placeholder="Your message" rows="5" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </div>
+</body>
+</html>

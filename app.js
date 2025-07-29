@@ -86,5 +86,22 @@ app.get('/dashboard', requireLogin, async (req, res) => {
   }
 });
 
+// Contact form routes
+app.get('/contact', (req, res) => {
+  res.render('contact', { message: null, error: null });
+});
+
+app.post('/contact', async (req, res) => {
+  const { name, email, message } = req.body;
+
+  try {
+    // You can implement email sending later
+    console.log(`Message from ${name} <${email}>: ${message}`);
+    res.render('contact', { message: '✅ Message sent successfully!', error: null });
+  } catch (err) {
+    res.render('contact', { message: null, error: '❌ Failed to send message.' });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
