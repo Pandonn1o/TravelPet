@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card {
+      background: #ffffff;
+      padding: 2rem 2.5rem;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+    }
+    h1 {
+      color: #2563eb;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      color: #334155;
+      font-size: 1.1rem;
+    }
+    a.button {
+      display: inline-block;
+      margin-top: 1.5rem;
+      background: #2563eb;
+      color: #fff;
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    a.button:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1><%= title %></h1>
+    <p><%= message %></p>
+    <a class="button" href="/auth/login">Go to Login</a>
+  </div>
+</body>
+</html>
