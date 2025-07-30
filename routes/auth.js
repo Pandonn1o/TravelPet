@@ -45,15 +45,7 @@ router.post('/signup', async (req, res) => {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
-    }
-    res.render('signup-success', {
-      message: '✅ Account created! A confirmation email has been sent to your inbox.',
     });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Signup error');
-  }
-  );
 
     const verifyUrl = `http://localhost:3000/auth/verify?token=${user.verificationToken}`;
 
