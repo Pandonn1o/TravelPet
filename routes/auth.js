@@ -15,7 +15,7 @@ function requireLogin(req, res, next) {
 
 // GET Signup form
 router.get('/signup', (req, res) => {
-  res.render('signup');
+  res.render('signup', { error: null });
 });
 
 // POST Signup with email verification
@@ -24,59 +24,81 @@ router.post('/signup', async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.redirect('/auth/signup?error=exists');
+      return res.render('signup', { error: 'User already exists' });
     }
 
-    // Generate verification token
     const verificationToken = crypto.randomBytes(32).toString('hex');
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create user with verification token
-    const user = new User({ email, password: hashedPassword, verificationToken });
+    const user = new User({
+      email,
+      password, // Let Mongoose pre-save middleware hash it
+      verificationToken,
+      verified: false
+    });
     await user.save();
 
-    // Send verification email
+    console.log("Preparing to send verification email to:", user.email);
+
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
-      }
+      },
+    }
+    res.render('signup-success', {
+      message: '✅ Account created! A confirmation email has been sent to your inbox.',
     });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Signup error');
+  }
+  );
 
-    const verificationLink = `http://localhost:3000/auth/verify/${verificationToken}`;
+    const verifyUrl = `http://localhost:3000/auth/verify?token=${user.verificationToken}`;
 
-    await transporter.sendMail({
-      from: `"TravelPet" <${process.env.EMAIL_USER}>`,
-      to: email,
-      subject: 'Verify your email ✔️',
-      html: `<p>Please click the following link to verify your email:</p><a href="${verificationLink}">${verificationLink}</a>`
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: 'Verify your email',
+      text: `Thanks for signing up! Please confirm your email:\n\n${verifyUrl}`
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("Verification email sent successfully.");
+
+    res.render('signup-success', {
+      message: '✅ Account created! A confirmation email has been sent to your inbox.',
     });
-
-    res.send('Signup successful! Please check your email to verify your account.');
   } catch (err) {
     console.error(err);
     res.status(500).send('Signup error');
   }
 });
 
-// Email verification route
-router.get('/verify/:token', async (req, res) => {
-  const user = await User.findOne({ verificationToken: req.params.token });
-  if (!user) return res.render('auth/verifyError');
+// Email verification
+router.get('/verify', async (req, res) => {
+  const token = req.query.token;
+  if (!token) return res.send('❌ Invalid verification link.');
 
-  user.verified = true;
-  user.verificationToken = undefined;
-  await user.save();
+  try {
+    const user = await User.findOne({ verificationToken: token });
+    if (!user) return res.send('❌ Invalid or expired verification link.');
 
-  res.render('auth/verify');
+    user.verified = true;
+    user.verificationToken = null;
+    await user.save();
+
+    res.send('✅ Email successfully verified! You can now log in.');
+  } catch (err) {
+    console.error(err);
+    res.send('❌ Verification failed.');
+  }
 });
 
 // GET Login form
 router.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login', { error: null });
 });
 
 // POST Login
@@ -84,14 +106,14 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
-    if (!user) return res.send('Invalid credentials');
+    if (!user) return res.render('login', { error: 'Invalid credentials' });
 
     if (!user.verified) {
-      return res.send('Please verify your email before logging in.');
+      return res.render('login', { error: 'Please verify your email first.' });
     }
 
-    const passwordMatch = await user.comparePassword(password);
-    if (!passwordMatch) return res.send('Invalid credentials (wrong password)');
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) return res.render('login', { error: 'Invalid credentials (wrong password)' });
 
     req.session.userId = user._id;
     res.redirect('/dashboard');
@@ -101,7 +123,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// ✅ GET Logout (повернули)
+// Logout
 router.get('/logout', (req, res) => {
   req.session.destroy(() => {
     res.redirect('/auth/login');
@@ -118,19 +140,20 @@ router.post('/contact', async (req, res) => {
   const { name, email, message } = req.body;
 
   try {
-    // Example: send email logic (customize as needed)
+    // Enable this when ready to send real contact emails
     // const transporter = nodemailer.createTransport({ ... });
-    // await transporter.sendMail({
-    //   from: email,
-    //   to: process.env.CONTACT_EMAIL,
-    //   subject: `Contact from ${name}`,
-    //   text: message
-    // });
+    // await transporter.sendMail({ ... });
 
-    res.render('contact', { message: 'Message sent successfully!', error: null });
+    res.render('contact', {
+      message: 'Message sent successfully!',
+      error: null
+    });
   } catch (err) {
     console.error(err);
-    res.render('contact', { message: null, error: 'Failed to send message. Please try again.' });
+    res.render('contact', {
+      message: null,
+      error: 'Failed to send message. Please try again.'
+    });
   }
 });
 

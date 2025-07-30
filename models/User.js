@@ -12,11 +12,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  verified: {
-    type: Boolean,
-    default: false
-  },
-  verificationToken: String
+ verificationToken: {
+  type: String,
+  default: null
+},
+verified: {
+  type: Boolean,
+  default: false
+}
 });
 
 // Хешування перед збереженням
