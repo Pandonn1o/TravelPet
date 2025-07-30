@@ -21,12 +21,20 @@ router.get('/signup', (req, res) => {
 // POST Signup with email verification
 router.post('/signup', async (req, res) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+  return res.render('signup', { error: 'Please fill in all fields.' });
+}
+
+if (password.length < 6) {
+  return res.render('signup', { error: 'Password must be at least 6 characters long.' });
+}
+
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.render('signup', { error: 'User already exists' });
     }
-
+    
     const verificationToken = crypto.randomBytes(32).toString('hex');
 
     const user = new User({
@@ -98,26 +106,33 @@ router.get('/login', (req, res) => {
 });
 
 // POST Login
+// POST Login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
-    if (!user) return res.render('login', { error: 'Invalid credentials' });
+
+    if (!user) {
+      return res.render('login', { error: '❌ No account with that email found.' });
+    }
 
     if (!user.verified) {
-      return res.render('login', { error: 'Please verify your email first.' });
+      return res.render('login', { error: 'Please verify your email before logging in.' });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) return res.render('login', { error: 'Invalid credentials (wrong password)' });
+    if (!passwordMatch) {
+      return res.render('login', { error: '❌ Incorrect password.' });
+    }
 
     req.session.userId = user._id;
     res.redirect('/dashboard');
   } catch (err) {
     console.error(err);
-    res.status(500).send('Login error');
+    res.status(500).render('login', { error: 'Server error. Please try again later.' });
   }
 });
+
 
 // Logout
 router.get('/logout', (req, res) => {
@@ -136,20 +151,28 @@ router.post('/contact', async (req, res) => {
   const { name, email, message } = req.body;
 
   try {
-    // Enable this when ready to send real contact emails
-    // const transporter = nodemailer.createTransport({ ... });
-    // await transporter.sendMail({ ... });
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
 
-    res.render('contact', {
-      message: 'Message sent successfully!',
-      error: null
-    });
+    const mailOptions = {
+      from: email,
+      to: process.env.CONTACT_EMAIL, // this is your email that will receive messages
+      subject: `Contact Form Message from ${name}`,
+      text: `You received a message from:\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("✅ Contact email sent!");
+
+    res.render('contact', { message: '✅ Message sent successfully!', error: null });
   } catch (err) {
-    console.error(err);
-    res.render('contact', {
-      message: null,
-      error: 'Failed to send message. Please try again.'
-    });
+    console.error("❌ Email send error:", err);
+    res.render('contact', { message: null, error: '❌ Failed to send message. Please try again.' });
   }
 });
 
