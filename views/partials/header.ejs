@@ -1,4 +1,4 @@
-<nav style="
+<nav class="main-nav" style="
   background:#007bff; 
   padding:1rem; 
   color:white; 
@@ -6,11 +6,15 @@
   flex-wrap:wrap;
   justify-content:space-between; 
   align-items:center;
+  position: relative;
 ">
   <div style="font-size: 1.3rem; font-weight: bold;">
     <a href="/" style="color:white; text-decoration:none;">TravelPet</a>
   </div>
-  <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+  <button class="nav-toggle" aria-label="Toggle navigation" style="background:none;border:none;color:white;font-size:2rem;display:none;cursor:pointer;">
+    &#9776;
+  </button>
+  <div class="nav-links" style="display: flex; flex-direction: row; flex-wrap: wrap;">
     <% if (currentUser) { %>
       <a href="/dashboard" style="color:white; margin:0.5rem 1rem; text-decoration:none;">Dashboard</a>
       <a href="/posts/new" style="color:white; margin:0.5rem 1rem; text-decoration:none;">Add Trip</a>
@@ -21,4 +25,47 @@
       <a href="/contact" style="color:white; margin:0.5rem 1rem; text-decoration:none;">Contact</a>
     <% } %>
   </div>
+  <style>
+    @media (max-width: 700px) {
+      .main-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.7rem 1rem;
+      }
+      .main-nav .nav-links {
+        flex-direction: row;
+        width: 100%;
+        display: none;
+        margin-top: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center; /* Center links horizontally */
+      }
+      .main-nav .nav-links.show {
+        display: flex;
+      }
+      .main-nav .nav-links a {
+        margin: 0.5rem 1rem 0.5rem 0;
+        width: auto;
+        text-align: center;
+      }
+      .main-nav .nav-toggle {
+        display: block;
+        position: absolute;
+        right: 1rem;
+        top: 1.1rem;
+      }
+    }
+  </style>
+  <script>
+    // Responsive nav toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const toggle = document.querySelector('.nav-toggle');
+      const links = document.querySelector('.nav-links');
+      if (toggle && links) {
+        toggle.addEventListener('click', function() {
+          links.classList.toggle('show');
+        });
+      }
+    });
+  </script>
 </nav>
