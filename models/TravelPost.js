@@ -6,10 +6,10 @@ const travelPostSchema = new mongoose.Schema({
     required: true,
   },
   description: String,
-  photo: String, // ← New
+  photo: String, 
   location: String,
-  latitude: Number,     // ← New
-  longitude: Number,    // ← New
+  latitude: Number,     
+  longitude: Number,    
   createdAt: {
     type: Date,
     default: Date.now,

@@ -55,7 +55,9 @@ if (password.length < 6) {
       },
     });
 
-    const verifyUrl = `http://localhost:3000/auth/verify?token=${user.verificationToken}`;
+    const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+    const verifyUrl = `${baseUrl}/auth/verify?token=${user.verificationToken}`;
+
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
