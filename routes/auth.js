@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 const User = require('../models/User');
 const router = express.Router();
 
-// Middleware to protect routes
+// Middleware 
 function requireLogin(req, res, next) {
   if (!req.session.userId) {
     return res.redirect('/auth/login');
@@ -39,7 +39,7 @@ if (password.length < 6) {
 
     const user = new User({
       email,
-      password, // Let Mongoose pre-save middleware hash it
+      password, 
       verificationToken,
       verified: false
     });
@@ -60,8 +60,8 @@ if (password.length < 6) {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: user.email,
-      subject: 'Verify your email',
-      text: `Thanks for signing up! Please confirm your email:\n\n${verifyUrl}`
+      subject: 'Verify your email✅',
+      text: `Thanks for signing up!!! Please confirm your email by following this link:\n\n${verifyUrl}`
     };
 
     await transporter.sendMail(mailOptions);
@@ -105,7 +105,7 @@ router.get('/login', (req, res) => {
   res.render('login', { error: null });
 });
 
-// POST Login
+
 // POST Login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
@@ -155,26 +155,32 @@ router.post('/contact', async (req, res) => {
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
+        pass: process.env.EMAIL_PASS,
+      },
     });
 
     const mailOptions = {
-      from: email,
-      to: process.env.CONTACT_EMAIL, // this is your email that will receive messages
-      subject: `Contact Form Message from ${name}`,
-      text: `You received a message from:\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+      from: process.env.EMAIL_USER,
+      to: process.env.CONTACT_EMAIL,
+      subject: `✉️ New Contact Message from ${name}`,
+      text: `You received a message:\n\nFrom: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
     };
 
-    await transporter.sendMail(mailOptions);
-    console.log("✅ Contact email sent!");
+    console.log("📤 Sending contact email to:", process.env.CONTACT_EMAIL);
+    console.log("📨 Email content:\n", mailOptions.text);
 
-    res.render('contact', { message: '✅ Message sent successfully!', error: null });
+    await transporter.sendMail(mailOptions);
+
+    console.log("✅ Contact form email sent.");
+    res.render('contact', { message: 'Message sent successfully!', error: null });
+
   } catch (err) {
-    console.error("❌ Email send error:", err);
+    console.error("❌ Failed to send contact email:", err);
     res.render('contact', { message: null, error: '❌ Failed to send message. Please try again.' });
   }
 });
+
+
 
 module.exports = router;
 module.exports.requireLogin = requireLogin;

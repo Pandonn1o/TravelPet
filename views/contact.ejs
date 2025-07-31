@@ -72,12 +72,13 @@
       <div class="error"><%= error %></div>
     <% } %>
 
-    <form action="/contact" method="POST">
-      <input type="text" name="name" placeholder="Your name" required />
-      <input type="email" name="email" placeholder="Your email" required />
-      <textarea name="message" placeholder="Your message" rows="5" required></textarea>
-      <button type="submit">Send</button>
-    </form>
+   <form action="/auth/contact" method="POST">
+  <input type="text" name="name" placeholder="Your Name" required>
+  <input type="email" name="email" placeholder="Your Email" required>
+  <textarea name="message" placeholder="Your Message" required></textarea>
+  <button type="submit">Send</button>
+</form>
+
   </div>
 </body>
 </html>

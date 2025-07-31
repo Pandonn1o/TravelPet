@@ -6,21 +6,35 @@
 
 ## 🛠️ Tech Stack
 
-- **Backend:** Node.js, Express
-- **Database:** MongoDB Atlas (Mongoose)
-- **Templating Engine:** EJS
-- **Other Tools:** dotenv, bcrypt, JWT (planned), Cloudinary (planned), Render for deployment
+**Frontend:**
+- EJS Templating
+- CSS (custom styled with Segoe UI + clean design)
+
+**Backend:**
+- Node.js
+- Express.js
+- MongoDB + Mongoose
+
+**Other:**
+- Nodemailer (Gmail integration)
+- bcrypt (Password hashing)
+- dotenv (Environment config)
+- express-session (Session-based login)
+- Leaflet.js (Map rendering)
 
 ---
 
 ## 🚀 Features (MVP)
 
-- ✅ Homepage with featured stories
-- ✅ MongoDB connection via Mongoose
-- ✅ User authentication (signup/login)
-- ✅ Add and view short travel stories
-- ✅ Mood tags and filters (e.g., 🌿 nature, 🎉 party)
-- 🔜 Profile pages to see your own stories
+- 🔐 **User Authentication** (Signup/Login with Email Verification)
+- ✅ **Email Verification** via Gmail + Nodemailer
+- 📬 **Contact Us** form with email notification
+- 🧳 **Travel Post CRUD** (Create, Read, Update, Delete)
+- 📸 **Upload Images** for posts (optional)
+- 🗺️ **Interactive Map** with [Leaflet.js]
+- 🎨 **Modern UI** with clean responsive design
+- 🔒 **Protected Routes** with session-based auth
+- 📨 Real-time **feedback messages** on login/signup actions
 
 ---
 
@@ -31,7 +45,11 @@
     git clone https://github.com/yourusername/tripteller.git
     cd tripteller
 2. **Create a .env file**
-    MONGO_URI=your_mongodb_connection_string
+    SESSION_SECRET=yourSecret
+    MONGO_URI=yourMongoURI
+    EMAIL_USER=yourGmail@gmail.com
+    EMAIL_PASS=yourAppPassword
+    CONTACT_EMAIL=yourGmail@gmail.com
     PORT=3000
 3.  **Run the server**
     ```bash
@@ -45,10 +63,15 @@
 #   ✨Inspiration
     This project is part of my journey to become a fullstack developer. I wanted to build something creative and real-world inspired — combining my love of travel with web development.
 
+#   🤝 Contributing
+    Pull requests are welcome. For major changes, please open an issue first.
+
 # 📬 Contact
     Built with ❤️ by Misha
     Email: mishadyshkant132@gmail.com
     GitHub: github.com/Pandonn1o
+    LinkedIn: https://www.linkedin.com/in/misha-dyshkant-5374942b3/
+
 
 # 🧭 Future Improvements
     Google Maps integration
