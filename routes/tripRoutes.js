@@ -7,7 +7,7 @@ const { requireLogin } = require('./auth');
 router.get('/new', requireLogin, (req, res) => {
   res.render('newTrip');
 });
-// Show edit form
+
 router.get('/:id/edit', requireLogin, async (req, res) => {
   try {
     const trip = await Trip.findOne({ _id: req.params.id, userId: req.session.userId });

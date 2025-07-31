@@ -8,7 +8,7 @@ const upload = require('../middleware/upload');
 // Show all posts
 router.get('/', async (req, res) => {
   const posts = await TravelPost.find().populate('owner');
-  res.render('index', { posts }); // <-- change from 'posts/index' to 'index'
+  res.render('index', { posts }); 
 });
 
 // Show form to create post
