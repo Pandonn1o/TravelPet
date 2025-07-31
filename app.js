@@ -10,7 +10,7 @@ const travelPostRoutes = require('./routes/travelPosts');
 const { requireLogin } = require('./routes/auth');
 const Trip = require('./models/Trip');
 const TravelPost = require('./models/TravelPost');
-
+const authRoutes = require('./routes/auth');
 const app = express();
 
 // Connect to DB
@@ -20,10 +20,8 @@ mongoose.connect(process.env.MONGO_URI, {
 })
 .then(() => console.log("✅ MongoDB connected"))
 .catch((err) => console.error("❌ MongoDB connection error:", err));
-// Middlewares
-app.use(express.urlencoded({ extended: false }));
 
-// Serve static files (for uploads, CSS, etc.)
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
@@ -38,7 +36,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Middleware to set currentUser for all views
+// Middleware to set currentUser 
 app.use(async (req, res, next) => {
   if (req.session.userId) {
     try {
@@ -53,22 +51,22 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// Set view engine and views folder
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Routes
 app.use('/trips', tripRoutes);
 app.use('/posts', travelPostRoutes);
-
-
-const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
+
+
+
 
 // Routes for main pages
 app.get('/', async (req, res) => {
   if (!req.session.userId) {
-    return res.render('landing'); // landing.ejs for non-logged users
+    return res.render('landing'); 
   }
 
   const posts = await TravelPost.find().populate('owner');
@@ -95,7 +93,6 @@ app.post('/contact', async (req, res) => {
   const { name, email, message } = req.body;
 
   try {
-    // You can implement email sending later
     console.log(`Message from ${name} <${email}>: ${message}`);
     res.render('contact', { message: '✅ Message sent successfully!', error: null });
   } catch (err) {
